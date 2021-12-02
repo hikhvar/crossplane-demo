@@ -1,0 +1,36 @@
+apiVersion: cache.aws.crossplane.io/v1beta1
+kind: ReplicationGroup
+metadata:
+  name: awscache-demo
+spec:
+  providerConfigRef:
+    name: demo
+  forProvider:
+    applyModificationsImmediately: true
+    cacheNodeType: cache.t3.micro
+    engine: redis
+    engineVersion: "6.2"
+    region: eu-central-1
+    replicationGroupDescription: "Demo rep group"
+    cacheSubnetGroupNameRef:
+      name: aws-cache-demo
+    securityGroupIds:
+      - sg-09fbc69342a67daa8
+  writeConnectionSecretToRef:
+    name: todo-cache
+    namespace: todo-app
+---
+apiVersion: cache.aws.crossplane.io/v1alpha1
+kind: CacheSubnetGroup
+metadata:
+  name: aws-cache-demo
+spec:
+  providerConfigRef:
+    name: demo
+  forProvider:
+    description: "Demo Cache SubnetGroup"
+    region: eu-central-1
+    subnetIds:
+      - subnet-0f089731b9e3a20de
+      - subnet-02532a5ab68462f6f
+      - subnet-0494c8c9231cbb890
