@@ -29,3 +29,15 @@ echo -e "[default]\naws_access_key_id = $(aws configure get aws_access_key_id --
 
 kubectl create secret generic aws-creds -n crossplane-system --from-file=creds=./creds.conf
 ```
+
+Deploy app:
+```
+kubectl apply -f dev-app.yaml
+```
+Observe demo:
+```
+watch kubectl get pods,deployments,replicationgroups.cache.aws.crossplane.io -n todo-app
+argocd admin dashboard --namespace=argocd
+```
+
+
