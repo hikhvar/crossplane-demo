@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hikhvar/crossplane-demo.git
+    targetRevision: HEAD
+    path: dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: todo-app
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Example Project
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - '*'
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  destinations:
+  - namespace: todo-app
+    server: https://kubernetes.default.svc
