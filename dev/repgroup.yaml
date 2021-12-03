@@ -7,7 +7,7 @@ spec:
     name: demo
   forProvider:
     applyModificationsImmediately: true
-    cacheNodeType: cache.t3.medium
+    cacheNodeType: cache.t3.micro
     engine: redis
     engineVersion: "6.2"
     region: eu-central-1
